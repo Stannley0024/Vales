@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Lisa ❤️</title>
-
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
+* {margin:0; padding:0; box-sizing:border-box;}
 body {
     font-family: Georgia, serif;
     background: radial-gradient(circle at center, #20002c, #0f0c29);
@@ -18,49 +16,59 @@ body {
     color:white;
 }
 
-/* TYPEWRITER */
-.typewriter {
-    font-size:30px;
-    white-space:nowrap;
-    overflow:hidden;
-    border-right:3px solid pink;
-    width:0;
-    animation: typing 4s steps(40,end) forwards,
-               blink 0.7s infinite;
+#countdown {
+    font-size:80px;
+    color:#ff66cc;
+    text-shadow:0 0 40px #ff007f;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:100;
 }
 
-@keyframes typing {
-    from { width:0 }
-    to { width:100% }
+#sheSaidYes {
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle at center, #ff007f, #ff66cc);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-size:80px;
+    color:white;
+    text-shadow:0 0 40px #ff0;
+    z-index:200;
+    animation:fadeIn 2s forwards;
 }
 
-@keyframes blink {
-    50% { border-color:transparent }
+@keyframes fadeIn {
+    from { opacity:0; }
+    to { opacity:1; }
 }
 
 /* Container */
 .container {
     text-align:center;
     z-index:10;
+    opacity:0;
+    animation:fadeInContainer 2s forwards;
+    animation-delay:6s; /* After countdown */
 }
 
-.big-heart {
-    font-size:80px;
-    animation:pulse 1.5s infinite;
+@keyframes fadeInContainer {
+    from {opacity:0; transform:scale(0.8);}
+    to {opacity:1; transform:scale(1);}
 }
 
-@keyframes pulse {
-    0% { transform:scale(1); }
-    50% { transform:scale(1.2); }
-    100% { transform:scale(1); }
-}
+.big-heart {font-size:80px; animation:pulse 1.5s infinite;}
+@keyframes pulse {0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
 
-.name {
-    font-size:60px;
-    margin:20px 0;
-    color:#ff66cc;
-    text-shadow:0 0 25px #ff007f;
-}
+.name {font-size:60px; margin:20px 0; color:#ff66cc; text-shadow:0 0 25px #ff007f;}
 
 button {
     padding:15px 40px;
@@ -72,45 +80,50 @@ button {
     font-weight:bold;
 }
 
-.yes-btn {
-    background:#ff007f;
-    color:white;
-    box-shadow:0 0 20px #ff007f;
-}
+.yes-btn {background:#ff007f; color:white; box-shadow:0 0 20px #ff007f;}
+.no-btn {background:#ccc; position:absolute;}
 
-.no-btn {
-    background:#ccc;
-    position:absolute;
-}
-
-/* FIREWORKS CANVAS */
-canvas {
-    position:absolute;
-    top:0;
-    left:0;
-}
+/* Fireworks Canvas */
+canvas { position:absolute; top:0; left:0; z-index:5; }
 </style>
 </head>
-
 <body>
 
-<canvas id="fireworks"></canvas>
+<div id="countdown">5</div>
 
 <div class="container">
     <div class="big-heart">❤️</div>
-    <div class="typewriter">Lisa... from the moment I met you...</div>
-    <div class="name">Will You Be My Valentine? 💕</div>
+    <div class="name">Lisa</div>
+    <div class="question">Will you be my Valentine? 💕</div>
 
     <button class="yes-btn" onclick="sayYes()">Yes 💖</button>
     <button class="no-btn" onmouseover="moveNo(this)">No 😅</button>
 </div>
+
+<div id="sheSaidYes">🎉 SHE SAID YES! 💍❤️ 🎉</div>
+
+<canvas id="fireworks"></canvas>
 
 <audio id="music" loop>
   <source src="song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// NO BUTTON RUNS
+// Countdown
+let countdownEl = document.getElementById('countdown');
+let countdown = 5;
+
+let countdownInterval = setInterval(()=>{
+    countdown--;
+    if(countdown>0){
+        countdownEl.textContent = countdown;
+    } else {
+        countdownEl.style.display='none';
+        clearInterval(countdownInterval);
+    }
+},1000);
+
+// NO BUTTON
 function moveNo(btn){
     btn.style.top = Math.random()*80+"%";
     btn.style.left = Math.random()*80+"%";
@@ -118,6 +131,7 @@ function moveNo(btn){
 
 // YES CLICK
 function sayYes(){
+    document.getElementById("sheSaidYes").style.display="flex";
     document.getElementById("music").play();
     startFireworks();
 }
@@ -132,7 +146,7 @@ let particles = [];
 
 function startFireworks(){
     setInterval(()=>{
-        for(let i=0;i<100;i++){
+        for(let i=0;i<150;i++){
             particles.push({
                 x: canvas.width/2,
                 y: canvas.height/2,
