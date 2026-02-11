@@ -2,85 +2,174 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Valentine? 💕</title>
+<title>Lisa ❤️</title>
+
 <style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
 body {
-    font-family: Georgia, serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #8B0000, #4B0082); /* dark red → purple */
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
 }
 
+/* Floating Hearts */
+.heart {
+    position:absolute;
+    color:#FF1493; /* bright pink/red hearts */
+    font-size:20px;
+    animation: float 8s linear infinite;
+    opacity:0.8;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity:0; }
+    50% { opacity:1; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity:0; }
+}
+
+/* Main Container */
 .container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 30px;
-    padding: 60px 50px;
-    box-shadow: 0px 20px 60px rgba(0,0,0,0.3);
-    text-align: center;
-    max-width: 600px;
+    background: rgba(255,255,255,0.05);
+    padding:60px;
+    border-radius:30px;
+    text-align:center;
+    backdrop-filter: blur(20px);
+    box-shadow:0 0 50px rgba(255,20,147,0.6); /* pink glow */
+    animation: fadeIn 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; transform:scale(0.8); }
+    to { opacity:1; transform:scale(1); }
 }
 
 .big-heart {
-    font-size: 80px;
+    font-size:90px;
+    animation: pulse 1.5s infinite;
+    text-shadow: 0 0 25px #FF1493;
 }
 
-h1 {
-    color: #e91e63;
-    font-size: 48px;
+@keyframes pulse {
+    0% { transform:scale(1); }
+    50% { transform:scale(1.2); }
+    100% { transform:scale(1); }
+}
+
+h1 { 
+    font-size:50px; 
+    margin:20px 0; 
+    color:#FF69B4;
+    text-shadow: 0 0 20px #FF1493;
 }
 
 .name {
-    color: #9c27b0;
-    font-size: 56px;
-    margin: 20px 0;
-    font-weight: bold;
+    font-size:60px;
+    font-weight:bold;
+    margin:15px 0;
+    text-shadow:0 0 25px #FF69B4;
 }
 
 .question {
-    color: #555;
-    font-size: 28px;
-    margin: 30px 0;
-    font-style: italic;
-}
-
-.buttons {
-    margin-top: 40px;
+    font-size:28px;
+    margin:25px 0;
+    font-style:italic;
+    color:#FFC0CB;
 }
 
 button {
-    padding: 18px 45px;
-    font-size: 24px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 10px;
+    padding:15px 40px;
+    font-size:22px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    margin:15px;
+    font-weight:bold;
+    transition:0.3s;
 }
 
 .yes-btn {
-    background: #ff4d88;
-    color: white;
+    background:#FF1493;
+    color:white;
+    box-shadow:0 0 20px #FF1493;
+}
+
+.yes-btn:hover {
+    transform:scale(1.2);
 }
 
 .no-btn {
-    background: #e0e0e0;
+    background:#ccc;
+    color:#333;
+    position:relative;
+}
+
+.celebrate {
+    font-size:80px;
+    margin-top:20px;
+    display:none;
+    animation: explode 1s ease-out;
+}
+
+@keyframes explode {
+    from { transform:scale(0); }
+    to { transform:scale(1.5); }
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
     <div class="big-heart">❤️</div>
     <h1>Hey</h1>
     <div class="name">Lisa</div>
     <div class="question">Will you be my Valentine? 💕</div>
-    <div class="buttons">
-        <button class="yes-btn" onclick="alert('YAY! 💖')">Yes! 💖</button>
-        <button class="no-btn">No</button>
-    </div>
+
+    <button class="yes-btn" onclick="sayYes()">Yes 💖</button>
+    <button class="no-btn" onmouseover="moveNo(this)">No 😅</button>
+
+    <div class="celebrate" id="celebrate">💍💖✨</div>
 </div>
+
+<!-- Background Music -->
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Floating hearts generator
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random()*5+5)+"s";
+    heart.style.fontSize = (Math.random()*20+15)+"px";
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{ heart.remove(); },8000);
+}
+setInterval(createHeart, 300);
+
+// Impossible No button
+function moveNo(btn){
+    btn.style.position="absolute";
+    btn.style.top = Math.random()*80+"%";
+    btn.style.left = Math.random()*80+"%";
+}
+
+// Yes clicked
+function sayYes(){
+    document.getElementById("celebrate").style.display="block";
+    document.getElementById("music").play();
+}
+</script>
+
 </body>
 </html>
