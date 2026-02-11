@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Lisa ❤️</title>
-
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
+* {margin:0; padding:0; box-sizing:border-box;}
 body {
-    font-family: 'Georgia', serif;
-    background: linear-gradient(135deg, #1a0026, #4b0082);
+    font-family: Georgia, serif;
+    background: radial-gradient(circle at center, #8B0000, #FF0000);
     height:100vh;
     overflow:hidden;
     display:flex;
@@ -18,10 +16,82 @@ body {
     color:white;
 }
 
-/* Floating Hearts */
+/* COUNTDOWN */
+#countdown {
+    font-size:80px;
+    color:#FFD700;
+    text-shadow:0 0 40px #FF4500;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:100;
+}
+
+/* FULL SCREEN SHE SAID YES */
+#sheSaidYes {
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle at center, #FF4500, #FF0000);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-size:80px;
+    color:white;
+    text-shadow:0 0 40px #FFD700;
+    z-index:200;
+    animation:fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+
+/* Container */
+.container {
+    text-align:center;
+    z-index:10;
+    opacity:0;
+    animation:fadeInContainer 2s forwards;
+    animation-delay:6s; /* After countdown */
+}
+
+@keyframes fadeInContainer {
+    from {opacity:0; transform:scale(0.8);}
+    to {opacity:1; transform:scale(1);}
+}
+
+.big-heart {font-size:80px; animation:pulse 1.5s infinite;}
+@keyframes pulse {0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
+
+.name {font-size:60px; margin:20px 0; color:#FFD700; text-shadow:0 0 25px #FF8C00;}
+
+button {
+    padding:15px 40px;
+    font-size:22px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    margin:15px;
+    font-weight:bold;
+}
+
+.yes-btn {background:#FF1493; color:white; box-shadow:0 0 20px #FF1493;}
+.no-btn {background:#ccc; position:absolute;}
+
+/* Fireworks Canvas */
+canvas { position:absolute; top:0; left:0; z-index:5; }
+
+/* Floating hearts */
 .heart {
     position:absolute;
-    color:#ff4da6;
+    color:#FF69B4;
     font-size:20px;
     animation: float 8s linear infinite;
     opacity:0.7;
@@ -32,134 +102,109 @@ body {
     50% { opacity:1; }
     100% { transform: translateY(-10vh) scale(1.5); opacity:0; }
 }
-
-.container {
-    background: rgba(255,255,255,0.08);
-    padding:60px;
-    border-radius:30px;
-    text-align:center;
-    backdrop-filter: blur(20px);
-    box-shadow:0 0 40px rgba(255,0,128,0.6);
-    animation: fadeIn 1.5s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity:0; transform:scale(0.8); }
-    to { opacity:1; transform:scale(1); }
-}
-
-.big-heart {
-    font-size:90px;
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0% { transform:scale(1); }
-    50% { transform:scale(1.2); }
-    100% { transform:scale(1); }
-}
-
-h1 { font-size:50px; margin:20px 0; color:#ff66cc; }
-
-.name {
-    font-size:60px;
-    font-weight:bold;
-    margin:15px 0;
-    text-shadow:0 0 20px #ff4da6;
-}
-
-.question {
-    font-size:28px;
-    margin:25px 0;
-    font-style:italic;
-}
-
-button {
-    padding:15px 40px;
-    font-size:22px;
-    border:none;
-    border-radius:50px;
-    cursor:pointer;
-    margin:15px;
-    font-weight:bold;
-    transition:0.3s;
-}
-
-.yes-btn {
-    background:#ff007f;
-    color:white;
-    box-shadow:0 0 20px #ff007f;
-}
-
-.yes-btn:hover {
-    transform:scale(1.2);
-}
-
-.no-btn {
-    background:#ccc;
-    color:#333;
-    position:relative;
-}
-
-.celebrate {
-    font-size:80px;
-    margin-top:20px;
-    display:none;
-    animation: explode 1s ease-out;
-}
-
-@keyframes explode {
-    from { transform:scale(0); }
-    to { transform:scale(1.5); }
-}
 </style>
 </head>
 
 <body>
 
+<canvas id="fireworks"></canvas>
+
+<div id="countdown">5</div>
+
 <div class="container">
     <div class="big-heart">❤️</div>
-    <h1>Hey</h1>
     <div class="name">Lisa</div>
     <div class="question">Will you be my Valentine? 💕</div>
 
     <button class="yes-btn" onclick="sayYes()">Yes 💖</button>
     <button class="no-btn" onmouseover="moveNo(this)">No 😅</button>
-
-    <div class="celebrate" id="celebrate">💍💖✨</div>
 </div>
 
-<!-- Background Music -->
+<div id="sheSaidYes">🎉 SHE SAID YES! 💍❤️ 🎉</div>
+
 <audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// Floating hearts generator
-function createHeart(){
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random()*5+5)+"s";
-    heart.style.fontSize = (Math.random()*20+15)+"px";
-    document.body.appendChild(heart);
+// Countdown
+let countdownEl = document.getElementById('countdown');
+let countdown = 5;
 
-    setTimeout(()=>{ heart.remove(); },8000);
-}
-setInterval(createHeart, 300);
+let countdownInterval = setInterval(()=>{
+    countdown--;
+    if(countdown>0){
+        countdownEl.textContent = countdown;
+    } else {
+        countdownEl.style.display='none';
+        clearInterval(countdownInterval);
+    }
+},1000);
 
-// Impossible No button
+// No button impossible
 function moveNo(btn){
-    btn.style.position="absolute";
     btn.style.top = Math.random()*80+"%";
     btn.style.left = Math.random()*80+"%";
 }
 
 // Yes clicked
 function sayYes(){
-    document.getElementById("celebrate").style.display="block";
+    document.getElementById("sheSaidYes").style.display="flex";
     document.getElementById("music").play();
+    startFireworks();
+    startHearts();
+}
+
+// FIREWORKS
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+function startFireworks(){
+    setInterval(()=>{
+        for(let i=0;i<150;i++){
+            particles.push({
+                x: canvas.width/2,
+                y: canvas.height/2,
+                angle: Math.random()*2*Math.PI,
+                speed: Math.random()*6+2,
+                radius: 2
+            });
+        }
+    },500);
+}
+
+function animate(){
+    requestAnimationFrame(animate);
+    ctx.fillStyle="rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach((p,i)=>{
+        p.x += Math.cos(p.angle)*p.speed;
+        p.y += Math.sin(p.angle)*p.speed;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,2*Math.PI);
+        ctx.fillStyle="hsl("+Math.random()*360+",100%,60%)";
+        ctx.fill();
+    });
+}
+
+animate();
+
+// FLOATING HEARTS
+function startHearts(){
+    setInterval(()=>{
+        const heart = document.createElement("div");
+        heart.className="heart";
+        heart.innerHTML="❤️";
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.animationDuration = (Math.random()*5+5)+"s";
+        heart.style.fontSize = (Math.random()*20+15)+"px";
+        document.body.appendChild(heart);
+        setTimeout(()=>{heart.remove()},8000);
+    },300);
 }
 </script>
 
