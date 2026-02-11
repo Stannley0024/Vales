@@ -1,86 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Will You Be My Valentine? 💕</title>
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
-    font-family: Georgia, serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  font-family: Georgia, serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 .container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 30px;
-    padding: 60px 50px;
-    box-shadow: 0px 20px 60px rgba(0,0,0,0.3);
-    text-align: center;
-    max-width: 600px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 30px;
+  padding: 60px 50px;
+  text-align: center;
+  max-width: 600px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
-
 .big-heart {
-    font-size: 80px;
+  font-size: 80px;
+  margin-bottom: 20px;
 }
-
 h1 {
-    color: #e91e63;
-    font-size: 48px;
+  color: #e91e63;
+  font-size: 48px;
 }
-
 .name {
-    color: #9c27b0;
-    font-size: 56px;
-    margin: 20px 0;
-    font-weight: bold;
+  color: #9c27b0;
+  font-size: 56px;
+  margin: 20px 0;
+  font-weight: bold;
 }
-
 .question {
-    color: #555;
-    font-size: 28px;
-    margin: 30px 0;
-    font-style: italic;
+  font-size: 28px;
+  margin: 30px 0;
 }
-
 .buttons {
-    margin-top: 40px;
+  margin-top: 30px;
 }
-
 button {
-    padding: 18px 45px;
-    font-size: 24px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 10px;
+  padding: 15px 35px;
+  font-size: 22px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  margin: 10px;
 }
-
 .yes-btn {
-    background: #ff4d88;
-    color: white;
+  background: #ff4d6d;
+  color: white;
 }
-
 .no-btn {
-    background: #e0e0e0;
+  background: #ddd;
+}
+.response {
+  display: none;
+  margin-top: 20px;
+  font-size: 26px;
+  color: #e91e63;
 }
 </style>
 </head>
-
 <body>
+
 <div class="container">
-    <div class="big-heart">❤️</div>
-    <h1>Hey</h1>
-    <div class="name">Lisa</div>
-    <div class="question">Will you be my Valentine? 💕</div>
-    <div class="buttons">
-        <button class="yes-btn" onclick="alert('YAY! 💖')">Yes! 💖</button>
-        <button class="no-btn">No</button>
-    </div>
+  <div class="big-heart">❤️</div>
+  <h1>Hey</h1>
+  <div class="name">Lisa</div>
+  <div class="question">Will you be my Valentine? 💕</div>
+
+  <div class="buttons">
+    <button class="yes-btn" onclick="showLove()">Yes! 💖</button>
+    <button class="no-btn" onclick="moveNo(this)">No</button>
+  </div>
+
+  <div class="response" id="response">YAY!!! 💍💖</div>
 </div>
+
+<script>
+function showLove() {
+  document.getElementById("response").style.display = "block";
+}
+
+function moveNo(button) {
+  button.style.position = "absolute";
+  button.style.left = Math.random() * 300 + "px";
+  button.style.top = Math.random() * 300 + "px";
+}
+</script>
+
 </body>
 </html>
